@@ -1,4 +1,4 @@
-import { vi, beforeEach } from 'vitest'
+﻿import { vi, beforeEach } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import { AppRoutes } from './App'
@@ -54,7 +54,7 @@ describe('App', () => {
       expect(screen.getByRole('link', { name: /services/i })).toBeInTheDocument()
       expect(screen.getByRole('link', { name: /portfolio/i })).toBeInTheDocument()
       expect(screen.getByRole('link', { name: /contact/i })).toBeInTheDocument()
-      expect(screen.getByRole('link', { name: /login/i })).toBeInTheDocument()
+      expect(screen.getByRole('link', { name: /log in/i })).toBeInTheDocument()
     })
 
     it('renders the login page', () => {

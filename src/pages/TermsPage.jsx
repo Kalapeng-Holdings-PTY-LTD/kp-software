@@ -1,3 +1,4 @@
+﻿import { Link } from 'react-router-dom'
 import { PageHeader, Card, SectionHeading } from '../components/ui'
 
 const CLAUSES = [
@@ -31,9 +32,15 @@ const CLAUSES = [
 export default function TermsPage() {
   return (
     <div className="max-w-3xl mx-auto px-4 py-12 text-left">
+      <Link
+        to="/contact"
+        className="inline-flex items-center gap-2 text-sm font-semibold text-brand-blue hover:underline mb-4"
+      >
+        Back to contact form
+      </Link>
       <PageHeader
         title="Terms & Conditions"
-        subtitle="Standard manufacturing and fabrication terms for quoted work." 
+        subtitle="Standard manufacturing and fabrication terms for quoted work."
       />
 
       <Card className="space-y-6">

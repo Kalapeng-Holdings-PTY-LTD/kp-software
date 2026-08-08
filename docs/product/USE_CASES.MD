@@ -39,6 +39,7 @@ Visitors can:
 * View portfolio articles
 * View approved reviews
 * Submit enquiries
+* Register a customer account
 * Contact the business
 
 Visitors cannot:
@@ -62,6 +63,7 @@ Customers can:
 * View project milestones
 * View customer-visible progress updates
 * View customer-visible media
+* Message the operations team on their projects
 * Submit reviews
 * Comment on their own reviews
 * Update personal profile details
@@ -72,7 +74,8 @@ Customers cannot:
 * Assign workers
 * Create projects
 * Edit project status
-* Access internal notes
+* Access internal notes or worker submissions
+* Message workers directly
 * Access operational dashboards
 
 ---
@@ -86,8 +89,8 @@ Workers can:
 * View assigned projects
 * View assigned tasks
 * Update task status
-* Upload progress photos
-* Submit work notes
+* Upload internal progress photos (operations review)
+* Submit internal work notes (operations review)
 * Mark tasks complete
 * View project instructions
 
@@ -97,7 +100,9 @@ Workers cannot:
 * Create projects
 * Delete projects
 * Access financial information
-* Access customer private information
+* Communicate with customers
+* Access project messaging
+* Publish customer-visible updates
 * Approve reviews
 * Manage users
 
@@ -115,10 +120,10 @@ Operations Admins can:
 * Create customer records
 * Assign workers
 * Create tasks
-* Manage project progress
-* Upload customer-visible updates
+* Manage project progress (including internal worker submissions)
+* Upload customer-visible updates and media
 * Moderate reviews
-* Manage customer communication
+* Manage customer communication (messaging)
 
 Operations Admins cannot:
 
@@ -175,11 +180,13 @@ A visitor submits a request for a quote or service.
 2. System validates submission.
 3. System stores enquiry.
 4. System assigns status = New.
-5. Admin receives notification.
+5. System prompts visitor to create a customer account (optional).
+6. Admin receives notification (future enhancement).
 
 ## Postconditions
 
 * Enquiry exists in database.
+* Visitor may register for portal access.
 
 ---
 
@@ -249,7 +256,7 @@ Worker
 
 ## Description
 
-Worker submits progress information.
+Worker submits internal progress information for operations review.
 
 ## Preconditions
 
@@ -258,14 +265,14 @@ Worker submits progress information.
 ## Main Flow
 
 1. Worker opens assigned project.
-2. Worker uploads notes.
-3. Worker uploads media.
+2. Worker uploads internal notes.
+3. Worker uploads internal media.
 4. Worker submits update.
 
 ## Postconditions
 
-* Progress update stored.
-* Customer visibility determined.
+* Progress update stored as internal (`visibleToCustomer: false`).
+* Operations admin can review and publish customer-visible updates separately.
 
 ---
 
@@ -324,7 +331,63 @@ Customer reviews completed work.
 
 ---
 
-# UC-007 Moderate Review
+# UC-007 Customer Self-Registration
+
+## Actor
+
+Visitor (becomes Customer)
+
+## Description
+
+A visitor creates a customer portal account to track quotes and communicate with operations.
+
+## Preconditions
+
+* Visitor has a valid email address not already registered.
+
+## Main Flow
+
+1. Visitor opens registration page (often after submitting an enquiry).
+2. Visitor enters name, email, password, and optional phone.
+3. System validates input and creates `customers` and `users` records.
+4. System returns a login token.
+
+## Postconditions
+
+* Customer can access the Client Portal.
+* Customer record exists and is linked to the user account.
+
+---
+
+# UC-008 Customer ↔ Operations Messaging
+
+## Actor
+
+Customer, Operations Admin
+
+## Description
+
+Customer and operations admin exchange project messages. Workers do not participate.
+
+## Preconditions
+
+* Customer owns the project.
+* Operations admin has access to the project.
+
+## Main Flow
+
+1. Customer or operations admin sends a project message.
+2. The other party replies in the project thread.
+3. Each party may edit their own messages.
+
+## Postconditions
+
+* Messages stored with `authorRole` of `customer` or `ops_admin`.
+* Workers cannot read or write messages.
+
+---
+
+# UC-009 Moderate Review
 
 ## Actor
 
@@ -420,7 +483,7 @@ Customer:
 
 Worker:
 
-* Assigned project media
+* All media on assigned projects (including internal submissions)
 
 Operations Admin:
 
@@ -429,6 +492,26 @@ Operations Admin:
 Super Admin:
 
 * All project media
+
+---
+
+## Message Visibility
+
+Customer:
+
+* Messages from customer and operations admin only (legacy worker messages hidden)
+
+Worker:
+
+* No access to project messages
+
+Operations Admin:
+
+* All project messages
+
+Super Admin:
+
+* All project messages
 
 ---
 
@@ -471,11 +554,13 @@ The system should record:
 Included in MVP:
 
 * Authentication
+* Customer self-registration
 * Enquiries
 * Projects
 * Worker assignments
-* Progress updates
-* Customer visibility
+* Internal worker progress updates
+* Operations-published customer visibility
+* Customer ↔ operations messaging
 * Reviews
 
 Excluded from MVP:

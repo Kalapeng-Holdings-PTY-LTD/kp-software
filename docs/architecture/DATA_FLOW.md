@@ -59,6 +59,19 @@ The visitor completes a contact form or quote request form.
 
 This enquiry becomes a lead in the system.
 
+After submission, the visitor is prompted to create a customer account so they can track their quote and message the operations team.
+
+### 2b. Customer self-registration (optional)
+
+A visitor may register at `/register` after submitting an enquiry (or at any time).
+
+**The system creates:**
+
+- a `customers` record (if one does not already exist for the email)
+- a `users` record with role `customer` and portal login credentials
+
+This gives the client immediate access to the Client Portal without waiting for admin conversion.
+
 ### 3. Admin reviews the enquiry
 
 The Admin Dashboard receives the new lead. The operations team reviews the enquiry, determines feasibility, and decides whether to proceed.
@@ -88,13 +101,14 @@ At this point, the enquiry becomes operational work.
 
 ### 5. Customer account is linked
 
-The customer is associated with the project and given access to the Client Portal.
+The customer is associated with the project and given access to the Client Portal — either through self-registration after an enquiry or when admin converts the lead.
 
 **This enables:**
 
 - secure login
 - private visibility into their own project
-- controlled communication and progress tracking
+- messaging with the operations team
+- viewing customer-visible progress updates
 
 ### 6. Workers are assigned
 
@@ -118,23 +132,28 @@ Tasks are created for the project and assigned to workers.
 
 - view assigned tasks
 - update task status
-- add work notes
-- upload progress photos
+- add internal work notes (operations only)
+- upload internal progress photos (operations only)
 - mark tasks complete
+
+Workers do **not** message customers directly. All client communication goes through the operations admin.
 
 This is the operational heartbeat of the system.
 
-### 8. Progress updates are visible to the customer
+### 8. Operations admin publishes customer-visible progress
 
-Certain progress updates are marked as customer-visible. These updates appear in the Client Portal.
+Workers submit progress notes and photos for operations review. These are stored as **internal** (`visibleToCustomer: false`).
+
+The operations admin reviews worker submissions and publishes customer-visible notes, photos, and messages through the Admin Dashboard.
 
 **The customer can see:**
 
 - current status
-- timeline updates
-- uploaded photos
+- timeline updates published by operations
+- customer-visible uploaded photos
 - milestone progress
 - completion state
+- messages from the operations team (and their own replies)
 
 This reduces the need for manual follow-ups and site visits.
 
@@ -192,20 +211,22 @@ The Client Portal shows authenticated customer data:
 
 - their projects
 - status timeline
-- media uploads
-- progress notes
+- customer-visible media uploads
+- customer-visible progress notes
+- messaging with the operations team
 - reviews and review history
 
 ### Worker Portal
 
-The Worker Portal shows execution data:
+The Worker Portal shows execution data only:
 
 - assigned projects
 - assigned tasks
 - due dates
-- work notes
-- photo uploads
+- internal work notes and photo uploads (visible to operations, not customers)
 - completion status
+
+Workers cannot access project messaging or communicate with customers.
 
 ### Admin Dashboard
 
@@ -215,6 +236,8 @@ The Admin Dashboard has full operational control:
 - project creation
 - worker assignment
 - customer management
+- customer communication (messaging)
+- publishing customer-visible progress and media
 - review moderation
 - portfolio publishing
 - internal reporting
@@ -281,11 +304,14 @@ sequenceDiagram
     participant C as Client Portal
 
     V->>P: Submit enquiry
+    P->>V: Prompt to register customer account
+    V->>P: Register and log in (optional)
     P->>A: Save lead record
     A->>A: Review and convert to project
     A->>W: Assign workers and tasks
-    W->>A: Submit progress updates
-    A->>C: Expose customer-visible updates
+    W->>A: Submit internal progress updates
+    A->>C: Publish customer-visible updates and messages
+    C->>A: Reply to operations team
     C->>A: Submit review after completion
     A->>P: Publish approved review or portfolio item
 ```

@@ -11,7 +11,7 @@ KP Enterprise Software is a digital operations and customer management platform 
 
 - **Public Site**
 - **Client Portal**
-- **Worker Portal**
+- #**Worker Portal**
 - **Admin Dashboard**
 
 The platform will manage business entities such as:

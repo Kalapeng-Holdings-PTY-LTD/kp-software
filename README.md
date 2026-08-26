@@ -26,16 +26,13 @@ npm install
 npm run dev            # http://localhost:5173 (proxies /api to backend)
 ```
 
-## Demo accounts
+## Authentication and seeding
 
-All demo accounts use password: `password123`
-
-| Email | Role |
-|-------|------|
-| admin@kp.com | Super Admin |
-| ops@kp.com | Operations Admin |
-| worker@kp.com | Worker |
-| customer@kp.com | Customer |
+- Production requires a strong `JWT_SECRET` (minimum 32 characters).
+- Demo seeding is disabled by default and can be enabled only for development with:
+  `ENABLE_DEMO_SEED=true`
+- Seeded users use `SEED_USER_PASSWORD` (must satisfy strong password policy).  
+  Default seed password (development/test only): `StrongSeed!234`
 
 ## Portals
 
@@ -49,6 +46,8 @@ All demo accounts use password: `password123`
 ## Workflow
 
 Lead → Enquiry → Project → Worker assignment → Task updates → Customer visibility → Completion → Review
+
+Enquiry submission requires explicit acceptance of Terms & Conditions and Privacy Policy.
 
 ## Tests
 
@@ -69,5 +68,7 @@ npm run test:all
 |----------|-------------|
 | `PORT` | Backend port (default 5000) |
 | `MONGODB_URI` | MongoDB connection string (optional for local dev) |
-| `JWT_SECRET` | Secret for signing auth tokens |
+| `JWT_SECRET` | Secret for signing auth tokens (required and strong in production) |
+| `ENABLE_DEMO_SEED` | Enable demo data seeding in development (`true` to enable) |
+| `SEED_USER_PASSWORD` | Password used for seeded users (must be strong) |
 | `VITE_API_URL` | Frontend API base URL (default `/api` via proxy) |

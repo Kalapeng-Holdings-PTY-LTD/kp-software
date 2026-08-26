@@ -33,7 +33,7 @@ function validateEnquiry(data) {
         return { valid: false, errors: ['Payload must be an object'] }
     }
     
-    const { name, email, service, message, phone } = data
+    const { name, email, service, message, phone, acceptedPolicies } = data
 
     if(!name || typeof name !== 'string' || name.trim().length === 0) {
         errors.push('name is required')
@@ -69,6 +69,10 @@ function validateEnquiry(data) {
     } else if (phone.replace(/[\s\-().+]/g, '').length < 10) {
       errors.push('phone number appears too short')
     }
+
+    if (acceptedPolicies !== true) {
+      errors.push('you must accept the terms and privacy policy')
+    }
   }
 
   return { valid: errors.length === 0, errors }
@@ -88,6 +92,7 @@ function buildEnquiry(data, idOverride) {
         phone: data.phone ? data.phone.trim() : null,
         service: data.service,
         message: data.message.trim(),
+        acceptedPolicies: true,
         status: ENQUIRY_STATUSES.NEW,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),

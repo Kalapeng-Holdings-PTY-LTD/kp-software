@@ -20,7 +20,7 @@ beforeEach(async () => {
 async function loginAs(email) {
   const res = await request(app)
     .post('/api/auth/login')
-    .send({ email, password: 'password123' })
+    .send({ email, password: 'StrongSeed!234' })
   return res.body.token
 }
 
@@ -28,7 +28,7 @@ describe('POST /api/auth/login', () => {
   it('returns a token for valid credentials', async () => {
     const res = await request(app)
       .post('/api/auth/login')
-      .send({ email: 'admin@kp.com', password: 'password123' })
+      .send({ email: 'admin@kp.com', password: 'StrongSeed!234' })
     expect(res.status).toBe(200)
     expect(res.body.token).toBeDefined()
     expect(res.body.user.role).toBe('super_admin')

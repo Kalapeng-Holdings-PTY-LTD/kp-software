@@ -20,7 +20,7 @@ beforeEach(async () => {
 async function loginAs(email) {
   const res = await request(app)
     .post('/api/auth/login')
-    .send({ email, password: 'password123' })
+    .send({ email, password: 'StrongSeed!234' })
   return res.body.token
 }
 
@@ -31,6 +31,7 @@ describe('lead to project workflow', () => {
       email: 'newlead@example.com',
       service: 'structural-steel',
       message: 'Need structural steel for a warehouse extension.',
+      acceptedPolicies: true,
     })
     expect(enquiryRes.status).toBe(201)
 

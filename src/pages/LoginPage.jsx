@@ -3,16 +3,9 @@ import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { PageHeader, Card, Button, Alert } from '../components/ui'
 
-const DEMO_ACCOUNTS = [
-  { email: 'admin@kp.com', role: 'Super Admin' },
-  { email: 'ops@kp.com', role: 'Operations Admin' },
-  { email: 'worker@kp.com', role: 'Worker' },
-  { email: 'customer@kp.com', role: 'Customer' },
-]
-
 export default function LoginPage() {
   const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('password123')
+  const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const { login, homePath } = useAuth()
   const navigate = useNavigate()
@@ -58,23 +51,6 @@ export default function LoginPage() {
           </div>
           <Button type="submit" className="w-full">Sign in</Button>
         </form>
-      </Card>
-      <Card className="mt-6">
-        <p className="text-sm text-steel-700 mb-3">Demo accounts (password: <code>password123</code>):</p>
-        <ul className="text-sm space-y-2">
-          {DEMO_ACCOUNTS.map((account) => (
-            <li key={account.email}>
-              <button
-                type="button"
-                className="text-amber-brand hover:underline"
-                onClick={() => setEmail(account.email)}
-              >
-                {account.email}
-              </button>
-              <span className="text-steel-700"> — {account.role}</span>
-            </li>
-          ))}
-        </ul>
       </Card>
     </div>
   )

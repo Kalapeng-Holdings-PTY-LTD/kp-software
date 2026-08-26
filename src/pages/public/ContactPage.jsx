@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { publicApi } from '../../api/client'
 import { PageHeader, Card, Button, Alert } from '../../components/ui'
 
@@ -18,6 +19,7 @@ export default function ContactPage() {
     phone: '',
     service: 'custom-fabrication',
     message: '',
+    acceptedPolicies: false,
   })
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
@@ -35,7 +37,14 @@ export default function ContactPage() {
     try {
       await publicApi.submitEnquiry(form)
       setSuccess(true)
-      setForm({ name: '', email: '', phone: '', service: 'custom-fabrication', message: '' })
+      setForm({
+        name: '',
+        email: '',
+        phone: '',
+        service: 'custom-fabrication',
+        message: '',
+        acceptedPolicies: false,
+      })
     } catch (err) {
       setError(err.message)
     } finally {
@@ -111,7 +120,24 @@ export default function ContactPage() {
               onChange={(e) => updateField('message', e.target.value)}
             />
           </div>
-          <Button type="submit" disabled={submitting}>
+          <div>
+            <label className="flex items-start gap-3 text-sm text-steel-700">
+              <input
+                id="acceptedPolicies"
+                type="checkbox"
+                checked={form.acceptedPolicies}
+                onChange={(e) => updateField('acceptedPolicies', e.target.checked)}
+                className="mt-1 h-4 w-4"
+              />
+              <span>
+                I agree to the{' '}
+                <Link to="/terms" className="font-semibold text-brand-blue hover:underline">Terms & Conditions</Link>{' '}
+                and{' '}
+                <Link to="/privacy" className="font-semibold text-brand-blue hover:underline">Privacy Policy</Link>.
+              </span>
+            </label>
+          </div>
+          <Button type="submit" disabled={submitting || !form.acceptedPolicies}>
             {submitting ? 'Submitting...' : 'Submit enquiry'}
           </Button>
         </form>

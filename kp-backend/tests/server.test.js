@@ -54,6 +54,7 @@ describe('POST /api/enquiries', () => {
     phone: '012 345 6789',
     service: 'custom-fabrication',
     message: 'I need a custom steel gate for my property.',
+    acceptedPolicies: true,
   }
 
   it('creates an enquiry and returns 201', async () => {
@@ -120,6 +121,13 @@ describe('POST /api/enquiries', () => {
   it('returns 400 when the request body is completely empty', async () => {
     const res = await request(app).post('/api/enquiries').send({})
     expect(res.status).toBe(400)
+  })
+
+  it('returns 400 when terms are not accepted', async () => {
+    const { acceptedPolicies, ...payload } = validPayload
+    const res = await request(app).post('/api/enquiries').send(payload)
+    expect(res.status).toBe(400)
+    expect(res.body.error).toMatch(/accept/i)
   })
 
   it('returns 400 for an invalid email address', async () => {

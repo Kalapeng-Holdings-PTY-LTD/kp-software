@@ -2,6 +2,7 @@ const express = require('express')
 const cors = require('cors')
 const { getStore } = require('./store')
 const { seedDatabase } = require('./services/seed')
+const { validateAuthConfig } = require('./services/authService')
 const { notFoundHandler, errorHandler } = require('./middleware/errorHandler')
 
 const authRoutes = require('./routes/auth.routes')
@@ -20,8 +21,15 @@ let initialized = false
 
 async function initializeApp() {
   if (initialized) return
+  validateAuthConfig()
   const store = await getStore()
-  await seedDatabase(store)
+  const env = process.env.NODE_ENV || 'development'
+  const shouldSeed =
+    env === 'test' ||
+    (env === 'development' && process.env.ENABLE_DEMO_SEED === 'true')
+  if (shouldSeed) {
+    await seedDatabase(store)
+  }
   initialized = true
 }
 

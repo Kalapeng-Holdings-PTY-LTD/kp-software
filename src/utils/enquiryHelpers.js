@@ -69,10 +69,10 @@ function validateEnquiry(data) {
     } else if (phone.replace(/[\s\-().+]/g, '').length < 10) {
       errors.push('phone number appears too short')
     }
+  }
 
-    if (acceptedPolicies !== true) {
-      errors.push('you must accept the terms and privacy policy')
-    }
+  if (acceptedPolicies !== true) {
+    errors.push('you must accept the terms and privacy policy')
   }
 
   return { valid: errors.length === 0, errors }

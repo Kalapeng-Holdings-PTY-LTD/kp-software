@@ -12,7 +12,7 @@ describe('password policy', () => {
   })
 
   it('rejects short passwords', () => {
-    const result = validatePasswordStrength('Sh0rt!A')
+    const result = validatePasswordStrength('S!1ab')
     expect(result.valid).toBe(false)
     expect(result.errors.join('; ')).toMatch(/at least/i)
   })

@@ -1,6 +1,6 @@
-const MIN_PASSWORD_LENGTH = 12
+const MIN_PASSWORD_LENGTH = 6
 const PASSWORD_POLICY_DESCRIPTION =
-  'Password must be at least 12 characters and include uppercase, lowercase, number, and special character.'
+  'Password must be at least 6 characters and include uppercase, lowercase, number, and special character.'
 
 function validatePasswordStrength(password) {
   const errors = []

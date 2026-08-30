@@ -23,6 +23,7 @@ describe('validateEnquiry', () => {
     email: 'john@example.com',
     service: 'custom-fabrication',
     message: 'I need a custom steel frame for my warehouse.',
+    acceptedPolicies: true,
   }
 
   describe('valid payloads', () => {
@@ -168,6 +169,12 @@ describe('validateEnquiry', () => {
   })
 
   describe('edge cases', () => {
+    it('fails when terms and privacy are not accepted', () => {
+      const result = validateEnquiry({ ...validData, acceptedPolicies: false })
+      expect(result.valid).toBe(false)
+      expect(result.errors[0]).toMatch(/accept/i)
+    })
+
     it('returns errors array even when payload is null', () => {
       const result = validateEnquiry(null)
       expect(result.valid).toBe(false)

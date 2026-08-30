@@ -1,5 +1,6 @@
 ﻿import { vi, beforeEach } from 'vitest'
 import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
 import { AppRoutes } from './App'
 import { AuthProvider } from './context/AuthContext'
@@ -69,6 +70,22 @@ describe('App', () => {
       expect(screen.getByRole('heading', { name: /contact & quote request/i })).toBeInTheDocument()
       expect(screen.getByLabelText(/name/i)).toBeInTheDocument()
       expect(screen.getByRole('button', { name: /submit enquiry/i })).toBeInTheDocument()
+    })
+
+    it('keeps submit enquiry disabled until policy consent is checked', async () => {
+      const user = userEvent.setup()
+      renderAt('/contact')
+      const submit = screen.getByRole('button', { name: /submit enquiry/i })
+      expect(submit).toBeDisabled()
+      await user.click(screen.getByRole('checkbox'))
+      expect(submit).toBeEnabled()
+    })
+
+    it('renders legal policy pages', () => {
+      renderAt('/privacy')
+      expect(screen.getByRole('heading', { name: /privacy policy/i })).toBeInTheDocument()
+      renderAt('/terms')
+      expect(screen.getByRole('heading', { name: /terms & conditions/i })).toBeInTheDocument()
     })
   })
 

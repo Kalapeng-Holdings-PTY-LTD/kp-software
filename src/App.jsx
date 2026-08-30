@@ -8,6 +8,8 @@ import ServicesPage from './pages/public/ServicesPage'
 import PortfolioPage from './pages/public/PortfolioPage'
 import ReviewsPage from './pages/public/ReviewsPage'
 import ContactPage from './pages/public/ContactPage'
+import PrivacyPage from './pages/PrivacyPage'
+import TermsPage from './pages/TermsPage'
 import LoginPage from './pages/LoginPage'
 
 import AdminDashboard from './pages/admin/AdminDashboard'
@@ -42,6 +44,8 @@ export function AppRoutes() {
             <Route path="portfolio" element={<PortfolioPage />} />
             <Route path="reviews" element={<ReviewsPage />} />
             <Route path="contact" element={<ContactPage />} />
+            <Route path="privacy" element={<PrivacyPage />} />
+            <Route path="terms" element={<TermsPage />} />
             <Route path="login" element={<LoginPage />} />
           </Route>
 

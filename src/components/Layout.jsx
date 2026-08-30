@@ -248,6 +248,14 @@ export function PublicLayout() {
           <span className="text-white font-semibold">KP Enterprise</span>
           {' '}— Welding & Fabrication
         </p>
+        <div className="mt-3 flex justify-center gap-4 text-sm">
+          <Link to="/privacy" className="text-white/85 hover:text-white hover:underline">
+            Privacy Policy
+          </Link>
+          <Link to="/terms" className="text-white/85 hover:text-white hover:underline">
+            Terms & Conditions
+          </Link>
+        </div>
       </footer>
     </div>
   )

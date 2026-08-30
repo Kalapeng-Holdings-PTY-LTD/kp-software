@@ -1,12 +1,17 @@
-const bcrypt = require('bcryptjs')
 const { ROLES } = require('../config/constants')
+const { hashPassword } = require('./authService')
 
 async function seedDatabase(store) {
   const existing = await store.findOne('users', { email: 'admin@kp.com' })
   if (existing) return
 
   const now = new Date().toISOString()
-  const passwordHash = await bcrypt.hash('password123', 10)
+  const seedPassword = process.env.SEED_USER_PASSWORD || 'StrongSeed!234'
+  const passwordResult = await hashPassword(seedPassword)
+  if (passwordResult.error) {
+    throw new Error(passwordResult.error)
+  }
+  const { passwordHash } = passwordResult
 
   const customer = await store.insert('customers', {
     id: store.generateId(),
@@ -33,13 +38,6 @@ async function seedDatabase(store) {
       name: 'Super Admin',
       role: ROLES.SUPER_ADMIN,
       customerId: null,
-      workerId: null,
-    },
-    {
-      email: 'nhlanhla9700@gmail.com',
-      name: 'Siya',
-      role: ROLES.CUSTOMER,
-      customerId: customer.id,
       workerId: null,
     },
     {
